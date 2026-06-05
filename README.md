@@ -312,6 +312,11 @@ Exemplos:
 
 Reduz dependência da Terra.
 
+
+## Design Patterns
+[Design Patterns](./docs/design_patterns.md)
+
+
 ## Estrutura de Dados
 
 ## Regras Lógicas

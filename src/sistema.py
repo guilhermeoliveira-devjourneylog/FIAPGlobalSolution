@@ -12,6 +12,10 @@ from mission.builders.mission_builder import MissionBuilder
 from mission.exporters.csv import CSVExporter
 from mission.exporters.parquet import ParquetExporter
 
+from mission.visualization.mission_console import (
+    MissionConsole
+)
+
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.align import Align
@@ -442,3 +446,9 @@ ParquetExporter.export(
 
 print(mission.head())
 print(mission.tail())
+
+viewer = MissionConsole()
+
+viewer.render_mission(
+    mission
+)

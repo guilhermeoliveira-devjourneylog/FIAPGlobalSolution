@@ -1,6 +1,16 @@
 # =========================================================
 # ARTEMIS MISSION CONTROL SYSTEM
 # =========================================================
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from mission.builders.mission_builder import MissionBuilder
+
+from mission.exporters.csv import CSVExporter
+from mission.exporters.parquet import ParquetExporter
 
 from rich.console import Console, Group
 from rich.panel import Panel
@@ -367,3 +377,68 @@ console.print(
 )
 
 console.print()
+
+console.print(
+    Panel(
+        Align.center(
+            r"""
+[bright_black]
+
+ █████╗ ██████╗ ████████╗███████╗███╗   ███╗██╗███████╗
+██╔══██╗██╔══██╗╚══██╔══╝██╔════╝████╗ ████║██║██╔════╝
+███████║██████╔╝   ██║   █████╗  ██╔████╔██║██║███████╗
+██╔══██║██╔══██╗   ██║   ██╔══╝  ██║╚██╔╝██║██║╚════██║
+██║  ██║██║  ██║   ██║   ███████╗██║ ╚═╝ ██║██║███████║
+╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚═╝╚══════╝
+
+            ╔══════════════════════════╗
+            ║  MISSION CONTROL  SYSTEM ║
+            ╚══════════════════════════╝
+
+    🚀 EARTH > 🛰️ LEO > 🌙 NRHO > 🏕️ LUNAR BASE   
+[/]
+"""
+        ),
+        border_style=PRIMARY,
+        box=box.DOUBLE,
+        padding=(1, 4),
+    )
+)
+
+console.print(
+    Panel(
+        Align.center(
+            "[bright_black]Gerando DataSet[/]"
+        ),
+        border_style=PRIMARY,
+        box=box.DOUBLE,
+        padding=(1, 4)
+    )
+)
+
+console.print()
+
+mission = (
+    MissionBuilder()
+    .add_phase("launch")
+    .add_phase("leo")
+    .add_phase("translunar")
+    .add_phase("nrho")
+    .add_phase("rendezvous")
+    .add_phase("landing")
+    .add_phase("surface")
+    .build()
+)
+
+CSVExporter.export(
+    mission,
+    "./data/artemis_mission.csv"
+)
+
+ParquetExporter.export(
+    mission,
+    "./data/artemis_mission.parquet"
+)
+
+print(mission.head())
+print(mission.tail())

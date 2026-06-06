@@ -2,43 +2,6 @@
 mission/phases/anomaly_detection.py
 
 Sistema de detecção de anomalias para a missão Artemis.
-
-O detector analisa os datasets produzidos por cada MissionPhase
-e identifica desvios operacionais, físicos e de telemetria.
-
-Anomalias suportadas
---------------------
-
-LAUNCH
-    - ALTITUDE_DROP
-    - VELOCITY_DROP
-
-LEO
-    - ORBITAL_DRIFT
-
-TRANSLUNAR
-    - FUEL_INCREASE
-    - EXCESSIVE_FUEL_CONSUMPTION
-    - POWER_OUT_OF_RANGE
-
-NRHO
-    - ORBITAL_DRIFT
-
-RENDEZVOUS
-    - DISTANCE_INCREASE
-    - DOCKING_FAILURE
-
-LANDING
-    - ALTITUDE_RISE
-    - LANDING_FAILURE
-
-SURFACE
-    - POWER_LOSS
-
-Autor:
-
-Versão:
-    1.0
 """
 
 from typing import List, Dict
@@ -48,25 +11,93 @@ import pandas as pd
 
 class MissionAnomalyDetector:
     """
-    Detector centralizado de anomalias da missão.
+    Sistema centralizado de detecção de anomalias para a missão Artemis.
 
-    A classe recebe um DataFrame referente a uma única fase
-    da missão e aplica as regras específicas daquela fase.
+    Esta classe é responsável por analisar os datasets gerados pelas
+    diferentes fases da missão e identificar comportamentos anormais
+    que possam indicar falhas operacionais, degradação de sistemas,
+    desvios de trajetória ou condições críticas de missão.
 
-    Exemplo:
+    O detector utiliza regras determinísticas específicas para cada
+    fase, avaliando métricas de telemetria como altitude, velocidade,
+    combustível, potência, distância de aproximação e status
+    operacional.
 
+    Fases suportadas
+    ----------------
+    - LAUNCH
+        * ALTITUDE_DROP
+        * VELOCITY_DROP
+
+    - LEO
+        * ORBITAL_DRIFT
+
+    - TRANSLUNAR
+        * FUEL_INCREASE
+        * EXCESSIVE_FUEL_CONSUMPTION
+        * POWER_OUT_OF_RANGE
+
+    - NRHO
+        * ORBITAL_DRIFT
+
+    - RENDEZVOUS
+        * DISTANCE_INCREASE
+        * DOCKING_FAILURE
+
+    - LANDING
+        * ALTITUDE_RISE
+        * LANDING_FAILURE
+
+    - SURFACE
+        * POWER_LOSS
+
+    Severidades
+    ------------
+    WARNING
+        Indica uma condição fora do comportamento esperado que deve
+        ser monitorada, mas que não representa falha imediata.
+
+    CRITICAL
+        Indica uma condição potencialmente perigosa que pode
+        comprometer o sucesso da missão ou a segurança da nave.
+
+    Estrutura da anomalia retornada
+    --------------------------------
+    Cada anomalia é representada por um dicionário contendo:
+
+    - phase:
+        Nome da fase da missão.
+
+    - index:
+        Índice da amostra onde a anomalia foi detectada.
+
+    - severity:
+        Nível de criticidade da ocorrência.
+
+    - anomaly:
+        Código identificador da anomalia.
+
+    Exemplo
+    --------
     >>> anomalies = MissionAnomalyDetector.detect(df)
 
-    Retorno:
+    >>> anomalies[0]
+    {
+        "phase": "TRANSLUNAR",
+        "index": 532,
+        "severity": "CRITICAL",
+        "anomaly": "FUEL_INCREASE"
+    }
 
-    [
-        {
-            "phase": "TRANSLUNAR",
-            "index": 532,
-            "severity": "CRITICAL",
-            "anomaly": "FUEL_INCREASE"
-        }
-    ]
+    Notes
+    -----
+    - O detector assume que o DataFrame recebido contém dados de
+      apenas uma fase da missão.
+    - Caso o DataFrame esteja vazio, nenhuma anomalia é retornada.
+    - As regras implementadas são baseadas em limites operacionais e
+      comportamentos físicos esperados para cada etapa da missão.
+    - O sistema pode ser expandido futuramente para incluir métodos
+      estatísticos, aprendizado de máquina e análise preditiva.
     """
 
     @staticmethod

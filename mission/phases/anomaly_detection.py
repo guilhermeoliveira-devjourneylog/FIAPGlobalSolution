@@ -36,7 +36,6 @@ SURFACE
     - POWER_LOSS
 
 Autor:
-    FIAP Global Solution
 
 Versão:
     1.0

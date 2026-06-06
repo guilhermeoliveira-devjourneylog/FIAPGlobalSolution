@@ -20,6 +20,10 @@ from mission.phases.anomaly_detection import (
     MissionAnomalyDetector
 )
 
+from mission.phases.predictive import (
+    PredictiveAnalyzer
+)
+
 viewer = MissionConsole()
 
 viewer.render_boot_screen()
@@ -51,6 +55,26 @@ ParquetExporter.export(
 viewer.render_mission(
     mission
 )
+
+viewer.render_prediction()
+
+for phase_name in mission["phase"].unique():
+
+    phase_df = mission[
+        mission["phase"] == phase_name
+    ]
+
+    predictions, phase_score = (
+        PredictiveAnalyzer.analyze(
+            phase_df
+        )
+    )
+
+    viewer.render_predictions_viewer(
+        phase_name,
+        predictions,
+        phase_score
+    )
 
 viewer.render_anomaly_detection()
 

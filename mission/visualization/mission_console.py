@@ -885,3 +885,65 @@ Construção da Moon Base
             elif option == "q":
 
                 break
+
+
+    # =====================================================
+    # RENDER PREDICTION
+    # =====================================================
+
+    def render_prediction(self):
+
+        self.console.print(
+            Panel(
+                Align.center(
+                    "[bright_black]Executando Predições[/]"
+                ),
+                border_style=self.PRIMARY,
+                box=box.DOUBLE
+            )
+        )
+
+    # =====================================================
+    # PREDICTION VIEWER
+    # =====================================================
+    
+    def render_predictions_viewer(
+        self,
+        phase_name,
+        predictions,
+        phase_score
+    ):
+        table = Table(
+            title=f"{phase_name} Predictions"
+        )
+
+        table.add_column("Metric")
+        table.add_column("Current")
+        table.add_column("Forecast")
+        table.add_column("Risk")
+        table.add_column("Health")
+
+        for p in predictions:
+
+            color = {
+                "LOW": "green",
+                "MEDIUM": "yellow",
+                "HIGH": "red"
+            }[p.risk]
+
+            table.add_row(
+                p.metric,
+                str(p.current_value),
+                str(p.predicted_value),
+                f"[{color}]{p.risk}[/{color}]",
+                f"{p.health_score}%"
+            )
+
+        self.console.print(table)
+
+        self.console.print(
+            Panel(
+                f"Phase Health Score: "
+                f"[cyan]{phase_score}%[/cyan]"
+            )
+        )

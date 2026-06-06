@@ -1,3 +1,5 @@
+import numpy as np
+
 class PowerModel:
     """
     Modelo simplificado de geração de telemetria elétrica da missão.

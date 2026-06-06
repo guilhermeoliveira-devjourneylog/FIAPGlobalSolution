@@ -2,6 +2,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.rule import Rule
 from rich.align import Align
+from rich.table import Table
 
 from mission.visualization.dashboard import (
     MissionDashboard
@@ -23,6 +24,71 @@ class MissionConsole:
 
         self.console = Console()
 
+    # =====================================================
+    # LEGENDA DAS FASES
+    # =====================================================
+
+    def render_phase_legend(self):
+
+        table = Table.grid(
+            padding=(0, 2)
+        )
+
+        table.add_column(
+            style="bold cyan",
+            width=14
+        )
+
+        table.add_column()
+
+        table.add_row(
+            "🚀 LAUNCH",
+            "Lançamento, subida e saída da Terra."
+        )
+
+        table.add_row(
+            "🌍 LEO",
+            "Órbita Baixa da Terra (Low Earth Orbit) para verificação dos sistemas."
+        )
+
+        table.add_row(
+            "🌙 TRANSLUNAR",
+            "Trajetória de transferência da Terra para a Lua."
+        )
+
+        table.add_row(
+            "🛰 NRHO",
+            "Órbita Halo Retilínea Próxima (Near Rectilinear Halo Orbit) ao redor da Lua."
+        )
+
+        table.add_row(
+            "🤝 RENDEZVOUS",
+            "Acoplamento e transferência de tripulação entre veículos."
+        )
+
+        table.add_row(
+            "📍 LANDING",
+            "Descida controlada e pouso na superfície lunar."
+        )
+
+        table.add_row(
+            "🔬 SURFACE",
+            "Operações científicas e exploração da superfície da Lua."
+        )
+
+        self.console.print(
+
+            Panel(
+                table,
+                title="REFERÊNCIA DAS FASES DA MISSÃO",
+                border_style=self.PHASE_COLOR
+            )
+        )
+
+    # =====================================================
+    # FASE INDIVIDUAL
+    # =====================================================
+
     def render_phase(
         self,
         phase_name,
@@ -32,6 +98,7 @@ class MissionConsole:
         self.console.print()
 
         self.console.print(
+
             Rule(
                 f"[bold {self.PHASE_COLOR}]"
                 f"{phase_name.upper()}"
@@ -41,6 +108,7 @@ class MissionConsole:
         try:
 
             self.console.print(
+
                 MissionDashboard.build(
                     dataframe
                 )
@@ -62,6 +130,10 @@ class MissionConsole:
                 )
             )
 
+    # =====================================================
+    # RESUMO
+    # =====================================================
+
     def render_summary(
         self,
         phase_name,
@@ -72,14 +144,14 @@ class MissionConsole:
 
             Align.center(
 
-                f"Rows      : {len(dataframe)}\n"
-                f"Columns   : {len(dataframe.columns)}"
+                f"Linhas   : {len(dataframe)}\n"
+                f"Colunas  : {len(dataframe.columns)}"
 
             ),
 
             title=(
-                f"{phase_name.upper()} "
-                f"SUMMARY"
+                f"RESUMO - "
+                f"{phase_name.upper()}"
             ),
 
             border_style=self.SUCCESS_COLOR
@@ -87,16 +159,25 @@ class MissionConsole:
 
         self.console.print(panel)
 
+    # =====================================================
+    # TIMELINE
+    # =====================================================
+
     def render_timeline(
         self,
         phases
     ):
 
         self.console.print(
+
             MissionTimeline.build(
                 phases
             )
         )
+
+    # =====================================================
+    # MISSÃO COMPLETA
+    # =====================================================
 
     def render_mission(
         self,
@@ -108,7 +189,7 @@ class MissionConsole:
             self.console.print(
 
                 Panel(
-                    "Mission dataset is None.",
+                    "Dataset da missão é nulo.",
                     border_style=self.ERROR_COLOR
                 )
             )
@@ -120,7 +201,7 @@ class MissionConsole:
             self.console.print(
 
                 Panel(
-                    "Mission dataset is empty.",
+                    "Dataset da missão está vazio.",
                     border_style=self.ERROR_COLOR
                 )
             )
@@ -132,7 +213,7 @@ class MissionConsole:
             self.console.print(
 
                 Panel(
-                    "Column 'phase' not found.",
+                    "Coluna 'phase' não encontrada.",
                     border_style=self.ERROR_COLOR
                 )
             )
@@ -156,20 +237,36 @@ class MissionConsole:
             Panel(
 
                 Align.center(
+
                     "[bold white]"
-                    "MISSION TELEMETRY OVERVIEW"
+                    "ARTEMIS MISSION TELEMETRY OVERVIEW"
                     "[/]"
+
                 ),
 
                 border_style=self.HEADER_COLOR
             )
         )
 
+        # ==========================================
+        # LEGENDA DAS FASES
+        # ==========================================
+
+        self.render_phase_legend()
+
         self.console.print()
+
+        # ==========================================
+        # TIMELINE
+        # ==========================================
 
         self.render_timeline(
             phases
         )
+
+        # ==========================================
+        # DASHBOARDS
+        # ==========================================
 
         for phase in phases:
 
@@ -191,7 +288,7 @@ class MissionConsole:
                 Align.center(
 
                     f"[{self.SUCCESS_COLOR}]"
-                    "MISSION VISUALIZATION COMPLETE"
+                    "VISUALIZAÇÃO DA MISSÃO CONCLUÍDA"
                     f"[/{self.SUCCESS_COLOR}]"
 
                 ),

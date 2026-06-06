@@ -16,8 +16,13 @@ from mission.visualization.mission_console import (
     MissionConsole
 )
 
+from mission.phases.anomaly_detection import (
+    MissionAnomalyDetector
+)
+
 from rich.console import Console, Group
 from rich.panel import Panel
+from rich.table import Table
 from rich.align import Align
 from rich.rule import Rule
 from rich.text import Text
@@ -452,3 +457,210 @@ viewer = MissionConsole()
 viewer.render_mission(
     mission
 )
+
+console.print(
+    Panel(
+        Align.center(
+            "[bright_black]Detectando Anomalias[/]"
+        ),
+        border_style=PRIMARY,
+        box=box.DOUBLE,
+        padding=(1, 4)
+    )
+)
+
+console.print()
+
+all_anomalies = []
+
+for phase_name in mission["phase"].unique():
+
+    phase_df = mission[
+        mission["phase"] == phase_name
+    ]
+
+    anomalies = (
+        MissionAnomalyDetector
+        .detect(phase_df)
+    )
+
+    all_anomalies.extend(
+        anomalies
+    )
+
+# =========================================================
+# ANOMALY VIEWER
+# =========================================================
+
+PAGE_SIZE = 25
+
+total_anomalies = len(
+    all_anomalies
+)
+
+if total_anomalies == 0:
+
+    console.print(
+        Panel(
+            Align.center(
+                "[green]Nenhuma anomalia detectada[/]"
+            ),
+            title="MISSION STATUS",
+            border_style="green",
+            box=box.DOUBLE
+        )
+    )
+
+else:
+
+    total_pages = (
+
+        total_anomalies
+        + PAGE_SIZE
+        - 1
+
+    ) // PAGE_SIZE
+
+    page = 0
+
+    while True:
+
+        console.clear()
+
+        console.print(
+            Panel(
+                Align.center(
+                    "[bold white]MISSION ANOMALY VIEWER[/]"
+                ),
+                border_style=PRIMARY,
+                box=box.DOUBLE
+            )
+        )
+
+        start = page * PAGE_SIZE
+
+        end = min(
+            start + PAGE_SIZE,
+            total_anomalies
+        )
+
+        table = Table(
+
+            title=(
+                f"ANOMALIES "
+                f"({start+1}-{end} "
+                f"de {total_anomalies})"
+            ),
+
+            box=box.ROUNDED,
+
+            show_lines=True
+        )
+
+        table.add_column(
+            "PHASE",
+            style="cyan"
+        )
+
+        table.add_column(
+            "INDEX",
+            justify="right"
+        )
+
+        table.add_column(
+            "SEVERITY"
+        )
+
+        table.add_column(
+            "ANOMALY",
+            style="red"
+        )
+
+        for anomaly in all_anomalies[
+            start:end
+        ]:
+
+            severity = (
+                anomaly["severity"]
+            )
+
+            if severity == "CRITICAL":
+
+                severity_view = (
+                    "[bold red]CRITICAL[/]"
+                )
+
+            else:
+
+                severity_view = (
+                    "[yellow]WARNING[/]"
+                )
+
+            table.add_row(
+
+                anomaly["phase"],
+
+                str(
+                    anomaly["index"]
+                ),
+
+                severity_view,
+
+                anomaly["anomaly"]
+            )
+
+        console.print(table)
+
+        console.print()
+
+        console.print(
+            f"[bright_black]"
+            f"Página {page+1}/{total_pages}"
+            f"[/]"
+        )
+
+        console.print()
+
+        console.print(
+            "[white]"
+            "[N] Próxima página    "
+            "[P] Página anterior    "
+            "[F] Primeira página    "
+            "[L] Última página    "
+            "[Q] Sair"
+            "[/]"
+        )
+
+        option = (
+            input(
+                "\nOpção: "
+            )
+            .strip()
+            .lower()
+        )
+
+        if option == "n":
+
+            if page < total_pages - 1:
+
+                page += 1
+
+        elif option == "p":
+
+            if page > 0:
+
+                page -= 1
+
+        elif option == "f":
+
+            page = 0
+
+        elif option == "l":
+
+            page = (
+                total_pages - 1
+            )
+
+        elif option == "q":
+
+            break

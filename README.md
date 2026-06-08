@@ -320,6 +320,10 @@ Reduz dependência da Terra.
 
 ## Regras Lógicas
 
+[Predição](./docs/logic_rule_predictive.md)
+[Detector de Anomalias](./docs/logic_rule_detect_anomaly.mddocs/)
+[DataSet](./docs/logic_rule_dataset.md)
+
 ## Técnica de Previsão
 
 ## Como Executar

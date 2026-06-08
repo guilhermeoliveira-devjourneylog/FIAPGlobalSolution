@@ -18,7 +18,7 @@ As anomalias possuem dois níveis de severidade:
 
 ---
 
-# Launch Detector
+## Launch Detector
 
 ## ALTITUDE_DROP
 
@@ -72,7 +72,7 @@ Detecta interrupção do ganho de velocidade.
 
 ---
 
-# LEO Detector
+## LEO Detector
 
 ## ORBITAL_DRIFT
 
@@ -88,7 +88,7 @@ Detecta desvios orbitais fora da faixa estatística esperada.
 
 ---
 
-# Translunar Detector
+## Translunar Detector
 
 ## FUEL_INCREASE
 
@@ -130,7 +130,7 @@ Detecta valores anormais de potência elétrica.
 
 ---
 
-# NRHO Detector
+## NRHO Detector
 
 ## ORBITAL_DRIFT
 
@@ -146,7 +146,7 @@ Detecta desvios orbitais utilizando estatística local em janela deslizante.
 
 ---
 
-# Rendezvous Detector
+## Rendezvous Detector
 
 ## DISTANCE_INCREASE
 
@@ -174,7 +174,7 @@ Detecta falha no acoplamento ao final da operação.
 
 ---
 
-# Landing Detector
+## Landing Detector
 
 ## ALTITUDE_RISE
 
@@ -215,7 +215,7 @@ Indica ausência de confirmação de pouso.
 
 ---
 
-# Surface Detector
+## Surface Detector
 
 ## POWER_LOSS
 

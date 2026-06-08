@@ -667,17 +667,22 @@ Construção da Moon Base
     def render_anomaly_detection(self):
 
         self.console.print(
+
             Panel(
+
                 Align.center(
                     "[bright_black]Detectando Anomalias[/]"
                 ),
+
                 border_style=self.PRIMARY,
+
                 box=box.DOUBLE
+
             )
         )
 
     # =====================================================
-    # ANOMALY
+    # ANOMALY VIEWER
     # =====================================================
 
     def render_anomaly_viewer(
@@ -704,6 +709,7 @@ Construção da Moon Base
                     border_style="green",
 
                     box=box.DOUBLE
+
                 )
             )
 
@@ -738,6 +744,7 @@ Construção da Moon Base
                     border_style=self.PRIMARY,
 
                     box=box.DOUBLE
+
                 )
             )
 
@@ -771,22 +778,81 @@ Construção da Moon Base
 
             table.add_column(
                 "PHASE",
-                style="cyan"
+                style="cyan",
+                width=12
             )
 
             table.add_column(
                 "INDEX",
-                justify="right"
+                justify="right",
+                width=8
             )
 
             table.add_column(
-                "SEVERITY"
+                "SEVERITY",
+                width=12
             )
 
             table.add_column(
                 "ANOMALY",
-                style="red"
+                style="red",
+                width=35
             )
+
+            table.add_column(
+                "DESCRIPTION",
+                style="white",
+                overflow="fold"
+            )
+
+            # =====================================================
+            # ANOMALY CATALOG
+            # =====================================================
+
+            ANOMALY_DESCRIPTIONS = {
+
+                "ALTITUDE_DROP":
+                    "Queda inesperada de altitude durante a ascensão.",
+
+                "VELOCITY_DROP":
+                    "Redução anormal da velocidade durante o lançamento.",
+
+                "ALTITUDE_STALL":
+                    "Altitude deixou de aumentar durante a subida.",
+
+                "VELOCITY_STALL":
+                    "Velocidade deixou de aumentar durante a subida.",
+
+                "ORBITAL_DRIFT":
+                    "Desvio significativo em relação à trajetória ou órbita nominal.",
+
+                "FUEL_INCREASE":
+                    "Aumento inesperado do nível de combustível detectado.",
+
+                "EXCESSIVE_FUEL_CONSUMPTION":
+                    "Consumo de combustível acima do perfil previsto.",
+
+                "POWER_OUTLIER":
+                    "Potência elétrica fora da faixa operacional esperada.",
+
+                "DISTANCE_INCREASE":
+                    "A espaçonave está se afastando do alvo durante o rendezvous.",
+
+                "DOCKING_FAILURE":
+                    "O procedimento de acoplamento não foi concluído.",
+
+                "ALTITUDE_RISE":
+                    "Aumento inesperado de altitude durante a descida.",
+
+                "SURFACE_NOT_REACHED":
+                    "A espaçonave não atingiu a superfície lunar.",
+
+                "LANDING_FAILURE":
+                    "Falha detectada durante a sequência de pouso.",
+
+                "POWER_LOSS":
+                    "Perda significativa de geração de energia na superfície lunar."
+            }
 
             for anomaly in anomalies[
                 start:end
@@ -807,6 +873,18 @@ Construção da Moon Base
                     "[yellow]WARNING[/]"
                 )
 
+                description = (
+
+                    ANOMALY_DESCRIPTIONS.get(
+
+                        anomaly["anomaly"],
+
+                        "Descrição não disponível."
+
+                    )
+
+                )
+
                 table.add_row(
 
                     anomaly["phase"],
@@ -817,7 +895,9 @@ Construção da Moon Base
 
                     severity_view,
 
-                    anomaly["anomaly"]
+                    anomaly["anomaly"],
+
+                    description
                 )
 
             self.console.print(
@@ -885,7 +965,6 @@ Construção da Moon Base
             elif option == "q":
 
                 break
-
 
     # =====================================================
     # RENDER PREDICTION

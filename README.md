@@ -1,7 +1,6 @@
 # FIAPGlobalSolution
 Sistema de Monitoramento Operacional Espacial
 
-
 **RM:** rm573419  
 Versão: 1.0
 Projeto: Artemis Mission Control System

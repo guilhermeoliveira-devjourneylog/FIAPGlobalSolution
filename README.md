@@ -326,9 +326,24 @@ Reduz dependência da Terra.
 
 ## Técnica de Previsão
 
+[Técnica de Previsão](predictive.md)
+
 ## Como Executar
 
+### Instalar dependências 
+
+```
+pip install -r requirements.txt
+```
+```
+& [root]/FIAPGlobalSolution/.venv/Scripts/python.exe [root]/FIAPGlobalSolution/src/sistema.py
+```
+
+### Executar via terminal 
+
 ## Input e Output
+
+[Input Output](./docs/in_out_md)
 
 ## Link Video do Youtube
 

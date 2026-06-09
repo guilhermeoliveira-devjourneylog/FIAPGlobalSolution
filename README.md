@@ -323,7 +323,7 @@ Reduz dependência da Terra.
 
 [Predição](./docs/logic_rule_predictive.md)
 
-[Detector de Anomalias](./docs/logic_rule_detect_anomaly.mddocs/)
+[Detector de Anomalias](./docs/logic_rule_detect_anomaly.md)
 
 [DataSet](./docs/logic_rule_dataset.md)
 

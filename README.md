@@ -329,7 +329,7 @@ Reduz dependência da Terra.
 
 ## Técnica de Previsão
 
-[Técnica de Previsão](predictive.md)
+[Técnica de Previsão](./docs/predictive.md)
 
 ## Como Executar
 

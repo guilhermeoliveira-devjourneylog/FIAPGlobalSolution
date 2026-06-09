@@ -346,7 +346,7 @@ pip install -r requirements.txt
 
 ## Input e Output
 
-[Input Output](./docs/in_out_md)
+[Input Output](./docs/in_out.md)
 
 ## Link Video do Youtube
 
